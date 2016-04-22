@@ -88,7 +88,6 @@ function! s:StartPreview()
 vim.command("let b:livepreview_buf_data['tmp_dir'] = '" +
         tempfile.mkdtemp() + "'")
 EEOOFF
-    echo b:livepreview_buf_data['tmp_dir']
 
     let b:livepreview_buf_data['tmp_src_file'] =
                 \ b:livepreview_buf_data['tmp_dir'] . '/' .
