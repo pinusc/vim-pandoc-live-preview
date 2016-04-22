@@ -32,10 +32,9 @@ suggested value of 'updatetime' is `1000`.
 
 ## Screenshot
 
-![Screenshot with Evince](https://github.com/xuhdev/vim-latex-live-preview/raw/master/screenshots/screenshot-evince.gif)
 
 <!--
-The screenshot is at ./screenshots/screenshot-evince.gif
+The screenshot is at ./screenshots/
 -->
 
 ['updatetime']: http://vimdoc.sourceforge.net/htmldoc/options.html#%27updatetime%27

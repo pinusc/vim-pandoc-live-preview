@@ -67,7 +67,7 @@ function! s:Compile()
 
     call s:RunInBackground('pandoc ' .
                 \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
-                \ l:tmp_out_file)
+                \ b:livepreview_buf_data['tmp_out_file'])
 
     if b:livepreview_buf_data['has_bibliography']
         " ToDo: Make the following work in Windows
@@ -88,6 +88,7 @@ function! s:StartPreview()
 vim.command("let b:livepreview_buf_data['tmp_dir'] = '" +
         tempfile.mkdtemp() + "'")
 EEOOFF
+    echo b:livepreview_buf_data['tmp_dir']
 
     let b:livepreview_buf_data['tmp_src_file'] =
                 \ b:livepreview_buf_data['tmp_dir'] . '/' .
@@ -95,12 +96,12 @@ EEOOFF
 
     silent exec 'write! ' . b:livepreview_buf_data['tmp_src_file']
 
-    let l:tmp_out_file = b:livepreview_buf_data['tmp_dir'] . '/' .
+    let b:livepreview_buf_data['tmp_out_file'] = b:livepreview_buf_data['tmp_dir'] . '/' .
                 \ fnameescape(expand('%:r')) . '.pdf'
 
     silent call system('pandoc ' .
                 \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
-                \ l:tmp_out_file])
+                \ b:livepreview_buf_data['tmp_out_file'])
     if v:shell_error != 0
         echo 'Failed to compile'
     endif
@@ -121,13 +122,13 @@ EEOOFF
         " Bibtex requires multiple latex compilations:
         silent call system('pandoc ' .
                 \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
-                \ l:tmp_out_file])
+                \ b:livepreview_buf_data['tmp_out_file'])
     endif
     if v:shell_error != 0
         echo 'Failed to compile bibliography'
     endif
 
-    call s:RunInBackground(s:previewer . ' ' . l:tmp_out_file)
+    call s:RunInBackground(s:previewer . ' ' . b:livepreview_buf_data['tmp_out_file'])
 
     lcd -
     
@@ -181,7 +182,7 @@ unlet! s:init_msg
 
 command! LLPStartPreview call s:StartPreview()
 
-autocmd CursorHold,CursorHoldI,BufWritePost *.tex call s:Compile()
+autocmd CursorHold,CursorHoldI,BufWritePost *.pdc call s:Compile()
 
 let &cpo = s:saved_cpo
 unlet! s:saved_cpo
