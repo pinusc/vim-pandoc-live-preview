@@ -1,3 +1,3 @@
 #!/bin/sh
 
-zip vim-latex-live-preview.zip plugin/*.vim doc/*.txt
+zip vim-pandoc-live-preview.zip plugin/*.vim doc/*.txt

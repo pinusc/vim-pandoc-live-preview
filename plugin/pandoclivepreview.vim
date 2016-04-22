@@ -65,10 +65,9 @@ function! s:Compile()
 
     silent exec 'write! ' . b:livepreview_buf_data['tmp_src_file']
 
-    call s:RunInBackground(
-                \ 'pdflatex -shell-escape -interaction=nonstopmode -output-directory=' .
-                \ b:livepreview_buf_data['tmp_dir'] . ' ' .
-                \ b:livepreview_buf_data['tmp_src_file'])
+    call s:RunInBackground('pandoc ' .
+                \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
+                \ l:tmp_out_file)
 
     if b:livepreview_buf_data['has_bibliography']
         " ToDo: Make the following work in Windows
@@ -99,9 +98,9 @@ EEOOFF
     let l:tmp_out_file = b:livepreview_buf_data['tmp_dir'] . '/' .
                 \ fnameescape(expand('%:r')) . '.pdf'
 
-    silent call system('pdflatex -shell-escape -interaction=nonstopmode -output-directory=' .
-                \ b:livepreview_buf_data['tmp_dir'] . ' ' .
-                \ b:livepreview_buf_data['tmp_src_file'])
+    silent call system('pandoc ' .
+                \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
+                \ l:tmp_out_file])
     if v:shell_error != 0
         echo 'Failed to compile'
     endif
@@ -120,10 +119,9 @@ EEOOFF
         silent call system('cd ' . b:livepreview_buf_data['tmp_dir'] .
                     \ ' && bibtex *.aux')
         " Bibtex requires multiple latex compilations:
-        silent call system(
-                    \ 'pdflatex -shell-escape -interaction=nonstopmode -output-directory=' .
-                    \ b:livepreview_buf_data['tmp_dir'] . ' ' .
-                    \ b:livepreview_buf_data['tmp_src_file'])
+        silent call system('pandoc ' .
+                \ b:livepreview_buf_data['tmp_src_file'] . ' -o ' .
+                \ l:tmp_out_file])
     endif
     if v:shell_error != 0
         echo 'Failed to compile bibliography'
